@@ -35,7 +35,7 @@ package org.bigbluebutton.core.layout.model
     }
     
     public function pushXml(xml:XML):void {
-      LogUtil.debug("Layout : " + xml.toString());
+      LogUtil.debug("LayoutDefinitionFile Layout : " + xml.toString());
       if (xml.@name == undefined)
         return;
         

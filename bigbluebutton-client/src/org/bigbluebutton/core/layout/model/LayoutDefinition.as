@@ -52,7 +52,13 @@ package org.bigbluebutton.core.layout.model {
       if (vxml.@default != undefined) {
         defaultLayout = (vxml.@default.toString().toUpperCase() == "TRUE") ? true : false;
       }
+      
+       
+      for each (var n:XML in vxml.view) {
+        LogUtil.debug("VIEW = " + n.toXMLString());
+      }
         
+/*        
       var role:String = Role.VIEWER;
       if (vxml.@role != undefined && _roles.indexOf(vxml.@role.toString().toUpperCase()) != -1) {
         role = vxml.@role.toString().toUpperCase();
@@ -66,6 +72,7 @@ package org.bigbluebutton.core.layout.model {
         window.load(n);
         _windows[role][window.name] = window;
       }
+   */   
     }
     
     public function load(vxml:XML):void {

@@ -20,6 +20,7 @@ package org.bigbluebutton.common
 {
 	public class Role
 	{
+    public static const ALL:String = "ALL";
 		public static const VIEWER:String = "VIEWER";
 		public static const PRESENTER:String = "PRESENTER";
 		public static const MODERATOR:String = "MODERATOR";	
