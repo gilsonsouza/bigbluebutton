@@ -36,7 +36,7 @@ package org.bigbluebutton.main.views.layout {
     import flash.events.TimerEvent;
     import org.bigbluebutton.common.LogUtil;
     import org.bigbluebutton.core.layout.managers.OrderManager;
-/*
+
     private var _name:String;
     private var _width:Number;
     private var _height:Number;
@@ -46,44 +46,44 @@ package org.bigbluebutton.main.views.layout {
     private var _maximized:Boolean = false;
     private var _hidden:Boolean = false;
     private var _order:int = -1;
-*/    
+   
     static private var EVENT_DURATION:int = 500;
 
     private var wlm:WindowLayoutModel = new WindowLayoutModel();
     
     public function get name():String {
-      return wlm.name;
+      return _name;
     }
     
     public function parseWindow(vxml:XML):void {
 //      LogUtil.debug("******** WindowLayout View = \n" + vxml.toXMLString());
       if (vxml != null) {
         if (vxml.@name != undefined) {
-          wlm.name = vxml.@name.toString();
+          _name = vxml.@name.toString();
         }
         if (vxml.@width != undefined) {
-          wlm.width = Number(vxml.@width);
+          _width = Number(vxml.@width);
         }
         if (vxml.@height != undefined) {
-          wlm.height = Number(vxml.@height);
+          _height = Number(vxml.@height);
         }
         if (vxml.@x != undefined) {
-          wlm.x = Number(vxml.@x);
+          _x = Number(vxml.@x);
         }
         if (vxml.@y != undefined) {
-          wlm.y = Number(vxml.@y);
+          _y = Number(vxml.@y);
         }
         if (vxml.@minimized != undefined) {
-          wlm.minimized = (vxml.@minimized.toString().toUpperCase() == "TRUE") ? true : false;
+          _minimized = (vxml.@minimized.toString().toUpperCase() == "TRUE") ? true : false;
         }
         if (vxml.@maximized != undefined) {
-          wlm.maximized = (vxml.@maximized.toString().toUpperCase() == "TRUE") ? true : false;
+          _maximized = (vxml.@maximized.toString().toUpperCase() == "TRUE") ? true : false;
         }
         if (vxml.@hidden != undefined) {
-          wlm.hidden = (vxml.@hidden.toString().toUpperCase() == "TRUE") ? true : false;
+          _hidden = (vxml.@hidden.toString().toUpperCase() == "TRUE") ? true : false;
         }
         if (vxml.@order != undefined) {
-          wlm.order = int(vxml.@order);
+          _order = int(vxml.@order);
         }
       }
     }
@@ -149,36 +149,39 @@ package org.bigbluebutton.main.views.layout {
       effect.duration = EVENT_DURATION;
       effect.target = window;
       
-      if (wlm.minimized) {
+      if (_minimized) {
         LogUtil.info("WindowLayout: Window is minimized!");
         if (!window.minimized) {
           LogUtil.info("WindowLayout: Minimizing window!");
           window.minimize();
         }
-      } else if (wlm.maximized) {
+      } else if (_maximized) {
         LogUtil.info("WindowLayout: Window is maximized!");
         if (!window.maximized) {
           LogUtil.info("WindowLayout: Maximizing window!");
           window.maximize();
         }
-      } else if (window.minimized && !wlm.minimized && !wlm.hidden) {
+      } else if (window.minimized && !_minimized && !_hidden) {
         LogUtil.info("WindowLayout: Unminimizing window!");
         window.unMinimize();
         delayEffect(display, window);
         return;
-      } else if (window.maximized && !wlm.maximized && !wlm.hidden) {
+      } else if (window.maximized && !_maximized && !_hidden) {
         LogUtil.info("WindowLayout: Restoring window!");
         window.maximizeRestore();
         delayEffect(display, window);
         return;
       } else {
-        if (!wlm.hidden) {
+        if (!_hidden) {
           LogUtil.info("WindowLayout: Window not hidden!");
-          var newWidth:int = int(wlm.width * display.width);
-          var newHeight:int = int(wlm.height * display.height);
-          var newX:int = int(wlm.x * display.width);
-          var newY:int = int(wlm.y * display.height);
-          
+//          var newWidth:int = int(wlm.width * display.width);
+//          var newHeight:int = int(wlm.height * display.height);
+//          var newX:int = int(wlm.x * display.width);
+//          var newY:int = int(wlm.y * display.height);
+          var newWidth:int = int(_width * display.width);
+          var newHeight:int = int(_height * display.height);
+          var newX:int = int(_x * display.width);
+          var newY:int = int(_y * display.height);          
           if (newX != window.x || newY != window.y) {
             var mover:Move = new Move();
             mover.xTo = newX;
@@ -196,7 +199,7 @@ package org.bigbluebutton.main.views.layout {
         }
       }
       
-      var layoutHidden:Boolean = wlm.hidden;
+      var layoutHidden:Boolean = _hidden;
 //      var windowVisible:Boolean = (window.alpha == 1);
       var windowVisible:Boolean = window.visible;
       if (windowVisible == layoutHidden) {
