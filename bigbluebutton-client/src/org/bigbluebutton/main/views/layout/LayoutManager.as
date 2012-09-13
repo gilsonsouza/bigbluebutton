@@ -1,6 +1,7 @@
 package org.bigbluebutton.main.views.layout
 {
-  import com.asfusion.mate.events.Dispatcher;  
+  import com.asfusion.mate.events.Dispatcher;
+  
   import flash.events.Event;
   import flash.events.EventDispatcher;
   import flash.events.IEventDispatcher;
@@ -9,12 +10,15 @@ package org.bigbluebutton.main.views.layout
   import flash.net.URLLoader;
   import flash.net.URLRequest;
   import flash.utils.Dictionary;
-  import flash.utils.Timer; 
+  import flash.utils.Timer;
+  
   import flexlib.mdi.containers.MDICanvas;
   import flexlib.mdi.containers.MDIWindow;
-  import flexlib.mdi.events.MDIManagerEvent;  
+  import flexlib.mdi.events.MDIManagerEvent;
+  
   import mx.controls.Alert;
-  import mx.events.ResizeEvent;  
+  import mx.events.ResizeEvent;
+  
   import org.bigbluebutton.common.IBbbModuleWindow;
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.core.EventBroadcaster;
@@ -72,11 +76,13 @@ package org.bigbluebutton.main.views.layout
       _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_MAXIMIZE, onActionOverWindowFinished);
       _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_RESTORE, onActionOverWindowFinished);
       _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_ADD, function(e:MDIManagerEvent):void {
+        LogUtil.debug("****************************** LayoutManager MDIManagerEvent.WINDOW_ADD Listeners! *************************");
         checkPermissionsOverWindow(e.window);
         applyLayout(_currentLayout);
       });
       
       _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_FOCUS_START, function(e:MDIManagerEvent):void {
+        LogUtil.debug("****************************** LayoutManager MDIManagerEvent.WINDOW_FOCUS_START Listeners! *************************");
         OrderManager.getInstance().bringToFront(e.window);
       });
       
@@ -171,8 +177,10 @@ package org.bigbluebutton.main.views.layout
     //    }
     
     private function onActionOverWindowFinished(e:MDIManagerEvent):void {
-//      if (LayoutDefinition.ignoreWindow(e.window))
-//        return;
+      LogUtil.debug("****** LayoutManager: onActionOverWindowFinished ***********");
+      
+      if (ViewLayout.ignoreWindow(e.window))
+        return;
       
       checkPermissionsOverWindow(e.window);
       if (_detectContainerChange) {
