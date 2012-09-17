@@ -71,8 +71,7 @@ package org.bigbluebutton.core.user.services {
     
     private function sendQueryForParticipants():void {
       var nc:NetConnection = connService.connection;
-      nc.call(
-        "participants.getParticipants",// Remote function name
+      nc.call("participants.getParticipants",
         new Responder(
           // participants - On successful result
           function(result:Object):void { 
@@ -82,22 +81,13 @@ package org.bigbluebutton.core.user.services {
               
               for(var p:Object in result.participants) {
                 var usr:Object = result.participants[p] as Object;
-//                participantJoined(usr);
-                var user:User = new User();
-                var userIDTemp:Number = Number(usr.userid);
-                user.userid = userIDTemp.toString();
-                user.name = usr.name;
-                user.role = usr.role;
-                user.changeStatus(new Status("hasStream", usr.status.hasStream));
-                user.changeStatus(new Status("presenter", usr.status.presenter));
-                user.changeStatus(new Status("raiseHand", usr.status.raiseHand));
+                var user:User = buildUser(usr);
                 LogUtil.info("Joined as [" + user.userid + "," + user.name + "," + user.role + "]");
                 users.addItem(user);
               }
             }	
             
-            usersModel.addUsers(users);
-            
+            usersModel.addUsers(users);           
             dispatcher.dispatchEvent(new UserEvent(UserEvent.USERS_ADDED));
           },	
           // status - On error occurred
@@ -110,6 +100,40 @@ package org.bigbluebutton.core.user.services {
           }
         )//new Responder
       ); //_netConnection.call
+    }
+    
+    private function buildUser(usr:Object):User {
+      var userIDTemp:Number = Number(usr.userid);
+      
+      var user:User = new User();
+      user.userid = userIDTemp.toString();
+      user.name = usr.name;
+      user.role = usr.role;
+      user.changeStatus(new Status("hasStream", usr.status.hasStream));
+      user.changeStatus(new Status("presenter", usr.status.presenter));
+      user.changeStatus(new Status("raiseHand", usr.status.raiseHand));  
+      
+      return user;
+    }
+    
+    public function participantJoined(joinedUser:Object):void {       
+      LogUtil.info("Joined as [" + joinedUser.userid + "," + joinedUser.name + "," + joinedUser.role + "]");
+      
+      var user:User = buildUser(joinedUser);;
+      usersModel.addUser(user);
+      
+      var joinEvent:UserEvent = new UserEvent(UserEvent.USER_JOINED);
+      joinEvent.userID = user.userid;
+      dispatcher.dispatchEvent(joinEvent);     
+    }
+    
+    public function participantLeft(user:Object):void { 	
+      var userID:String = String(user);
+      usersModel.removeUser(userID);
+      
+      var leftEvent:UserEvent = new UserEvent(UserEvent.USER_LEFT);
+      leftEvent.userID = userID;
+      dispatcher.dispatchEvent(leftEvent);      
     }
     
     private function becomePresenterIfLoneModerator():void {
@@ -194,56 +218,9 @@ package org.bigbluebutton.core.user.services {
       }
     }
     
-    public function participantLeft(user:Object):void { 			
-/*      var participant:BBBUser = UserManager.getInstance().getConference().getParticipant(Number(user));
-      
-      var p:User = new User();
-      p.userid = String(participant.userid);
-      p.name = participant.name;
-      
-      UserManager.getInstance().participantLeft(p);
-      UserManager.getInstance().getConference().removeParticipant(Number(user));	
-      
-      var dispatcher:Dispatcher = new Dispatcher();
-      var joinEvent:ParticipantJoinEvent = new ParticipantJoinEvent(ParticipantJoinEvent.PARTICIPANT_JOINED_EVENT);
-      joinEvent.participant = p;
-      joinEvent.join = false;
-      dispatcher.dispatchEvent(joinEvent);	
-*/      
-      
-    }
+
     
-    public function participantJoined(joinedUser:Object):void { 
-      
-      LogUtil.info("Joined as [" + joinedUser.userid + "," + joinedUser.name + "," + joinedUser.role + "]");
-      
-/*      var user:BBBUser = new BBBUser();
-      user.userid = Number(joinedUser.userid);
-      user.name = joinedUser.name;
-      user.role = joinedUser.role;
-      
-      LogUtil.debug("User status: " + joinedUser.status.hasStream);
-      
-      LogUtil.info("Joined as [" + user.userid + "," + user.name + "," + user.role + "]");
-      UserManager.getInstance().getConference().addUser(user);
-      participantStatusChange(user.userid, "hasStream", joinedUser.status.hasStream);
-      participantStatusChange(user.userid, "presenter", joinedUser.status.presenter);
-      participantStatusChange(user.userid, "raiseHand", joinedUser.status.raiseHand);
-      
-      var participant:User = new User();
-      participant.userid = String(user.userid);
-      participant.name = user.name;
-      participant.isPresenter = joinedUser.status.presenter;
-      participant.role = user.role;
-      UserManager.getInstance().participantJoined(participant);
-      
-      var dispatcher:Dispatcher = new Dispatcher();
-      var joinEvent:ParticipantJoinEvent = new ParticipantJoinEvent(ParticipantJoinEvent.PARTICIPANT_JOINED_EVENT);
-      joinEvent.participant = participant;
-      joinEvent.join = true;
-      dispatcher.dispatchEvent(joinEvent);	
- */     
-    }
+
     
     /**
      * Called by the server to tell the client that the meeting has ended.
