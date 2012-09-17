@@ -7,10 +7,8 @@ package org.bigbluebutton.core.user.model
   import org.bigbluebutton.core.user.model.vo.User;
 
   public class UsersModel
-  {
-    
-    public var myUserID:String;
-    
+  {   
+    public var myUserID:String;    
     private var _users:ArrayCollection = new ArrayCollection();	
     
     public function addUsers(users:ArrayCollection):void {

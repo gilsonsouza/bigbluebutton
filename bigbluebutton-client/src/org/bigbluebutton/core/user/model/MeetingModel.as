@@ -4,8 +4,7 @@ package org.bigbluebutton.core.user.model
 
   public class MeetingModel
   {
-    public var meeting:Meeting;
-    
+    public var meeting:Meeting;    
     public var myUserID:String;
     
     public function MeetingModel()

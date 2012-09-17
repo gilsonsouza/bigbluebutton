@@ -37,7 +37,7 @@ package org.bigbluebutton.core.layout.model {
     
     static private var _ignoredWindows:Array = new Array("PublishWindow", "VideoWindow", "DesktopPublishWindow", 
                                                           "DesktopViewWindow", "LogWindow");
-    static private var _roles:Array = new Array(Role.VIEWER, Role.MODERATOR, Role.PRESENTER);
+    static private var _roles:Array = new Array(Role.ALL, Role.VIEWER, Role.MODERATOR, Role.PRESENTER);
     
     public function displayWindow(window:IBbbModuleWindow, display:MainDisplay):void {
       LogUtil.warn("LayoutDefinition: Displaying Window [" + window.getWindowID() + "]");
@@ -53,9 +53,15 @@ package org.bigbluebutton.core.layout.model {
         defaultLayout = (vxml.@default.toString().toUpperCase() == "TRUE") ? true : false;
       }
       
-       
+      var role:String = Role.ALL; 
       for each (var n:XML in vxml.view) {
-        LogUtil.debug("VIEW = " + n.toXMLString());
+        var window:WindowLayout = new WindowLayout();
+        if (n.@role != undefined && _roles.indexOf(n.@role.toString().toUpperCase()) != -1) {
+          role = n.@role.toString().toUpperCase();
+        }
+        _windows[role] = window;
+        LogUtil.debug("VIEW = [" + role + "]\n" + n.toXMLString());
+        window.load(n);
       }
         
 /*        

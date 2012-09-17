@@ -50,6 +50,7 @@ package org.bigbluebutton.main.views.layout {
     static private var EVENT_DURATION:int = 500;
 
     public function load(vxml:XML):void {
+      LogUtil.debug("******** WindowLayout View = \n" + vxml.toString());
       if (vxml != null) {
         if (vxml.@name != undefined) {
           name = vxml.@name.toString();
