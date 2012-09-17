@@ -18,10 +18,7 @@
  * Author: Felipe Cecagno <felipe@mconf.org>
  */
 package org.bigbluebutton.core.layout.model
-{
-  import flash.events.EventDispatcher;
-  import flash.events.IEventDispatcher;
-  
+{ 
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.core.EventBroadcaster;
   import org.bigbluebutton.core.layout.events.LayoutsLoadedEvent;
@@ -31,15 +28,14 @@ package org.bigbluebutton.core.layout.model
   
   public class LayoutDefinitionFile {    
     public var meetingModel:MeetingModel
-    public var dispatcher:IEventDispatcher;
-    
+   
     private var _layouts:Array = new Array();
     
     public function get list():Array {
       return _layouts;
     }
     
-    public function pushXml(xml:XML):void {
+    public function parseLayout(xml:XML):void {
       LogUtil.debug("LayoutDefinitionFile Layout : " + xml.toString());
       if (xml.@name == undefined)
         return;
@@ -67,7 +63,7 @@ package org.bigbluebutton.core.layout.model
     
     public function getDefault():LayoutDefinition {
       for each (var value:LayoutDefinition in _layouts) {
-        if (value.defaultLayout)
+        if (value.isDefaultLayout)
           return value;
       }
       return null;

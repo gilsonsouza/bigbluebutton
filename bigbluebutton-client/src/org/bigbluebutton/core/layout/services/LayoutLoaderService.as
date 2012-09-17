@@ -16,6 +16,8 @@ package org.bigbluebutton.core.layout.services
     public var configModel:ConfigModel;
     public var dispatcher:IEventDispatcher;
     
+    private var _loader:LayoutLoader;
+    
     public function loadServerLayouts():void {
       var layoutUrl:String = "conf/layout.xml";
       var vxml:XML = configModel.config.layout;
@@ -24,9 +26,10 @@ package org.bigbluebutton.core.layout.services
       }
             
       LogUtil.debug("LayoutLoaderService: loading server layouts from " + layoutUrl);
-      var loader:LayoutLoader = new LayoutLoader();
-      loader.addEventListener(LayoutsLoadedEvent.LAYOUTS_LOADED_EVENT, onLayoutLoadedHandler);
-      loader.loadFromUrl(layoutUrl);
+      _loader = new LayoutLoader();
+      _loader.layoutModel = layoutModel;
+      _loader.addEventListener(LayoutsLoadedEvent.LAYOUTS_LOADED_EVENT, onLayoutLoadedHandler);
+      _loader.loadFromUrl(layoutUrl);
     }
     
     private function onLayoutLoadedHandler(event:LayoutsLoadedEvent):void {

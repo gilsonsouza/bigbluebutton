@@ -46,11 +46,10 @@ package org.bigbluebutton.main.views.layout {
     [Bindable] public var hidden:Boolean = false;
     [Bindable] public var order:int = -1;
     
-
     static private var EVENT_DURATION:int = 500;
 
-    public function load(vxml:XML):void {
-      LogUtil.debug("******** WindowLayout View = \n" + vxml.toString());
+    public function parseWindow(vxml:XML):void {
+//      LogUtil.debug("******** WindowLayout View = \n" + vxml.toXMLString());
       if (vxml != null) {
         if (vxml.@name != undefined) {
           name = vxml.@name.toString();

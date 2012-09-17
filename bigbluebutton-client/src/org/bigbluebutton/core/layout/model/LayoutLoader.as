@@ -19,23 +19,27 @@
  */
 package org.bigbluebutton.core.layout.model
 {
-  import flash.events.EventDispatcher;
   import flash.events.Event;
-  import flash.events.ProgressEvent;
+  import flash.events.EventDispatcher;
   import flash.events.IOErrorEvent;
+  import flash.events.ProgressEvent;
   import flash.events.SecurityErrorEvent;
   import flash.net.FileReference;
   import flash.net.URLLoader;
-  import flash.net.URLRequest;  
+  import flash.net.URLRequest;
+  
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.core.EventBroadcaster;
-  import org.bigbluebutton.core.model.Config;
   import org.bigbluebutton.core.layout.events.LayoutsLoadedEvent;
   import org.bigbluebutton.core.layout.model.LayoutDefinition;
+  import org.bigbluebutton.core.model.Config;
   import org.bigbluebutton.util.i18n.ResourceUtil;
+
   
   public class LayoutLoader extends EventDispatcher {
     private var _fileRef:FileReference;
+    
+    public var layoutModel:LayoutModel;
     
     public function loadFromUrl(layoutUrl:String):void {
       var urlLoader:URLLoader = new URLLoader();
@@ -60,6 +64,13 @@ package org.bigbluebutton.core.layout.model
     
     private function onComplete(evt:Event):void {
       LogUtil.debug("LayoutsLoader: completed, parsing...");
+      
+      layoutModel.parseLayout(new XML(evt.target.data));
+      var event:LayoutsLoadedEvent = new LayoutsLoadedEvent();
+      event.success = true;
+      dispatchEvent(event);
+      
+/*      
       var layouts:LayoutDefinitionFile = new LayoutDefinitionFile();
       var event:LayoutsLoadedEvent = new LayoutsLoadedEvent();
       try {
@@ -75,7 +86,8 @@ package org.bigbluebutton.core.layout.model
         event.error = new TypeError("Failed to parse the XML: " + error.message);
         dispatchEvent(event);
       }
-    }
+*/
+      }
     
     private function onFileSelected(evt:Event):void { 
       LogUtil.debug("LayoutsLoader: file selected");

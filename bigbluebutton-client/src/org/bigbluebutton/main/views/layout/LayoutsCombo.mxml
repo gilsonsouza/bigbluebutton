@@ -84,7 +84,7 @@
         var idx:int = 0;
         for each (var value:LayoutDefinition in e.layouts.list) {
           var item:Object = {index:idx, label:value.name, layout:value};
-          if (value.defaultLayout)
+          if (value.isDefaultLayout)
             _defaultLayout = item;
           dataProvider.addItem(item);
           idx++;

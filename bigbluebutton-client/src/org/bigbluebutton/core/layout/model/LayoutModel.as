@@ -12,8 +12,17 @@ package org.bigbluebutton.core.layout.model
     private var _layouts:LayoutDefinitionFile;    
     private var _currentLayout:LayoutDefinition;
     
+    public function parseLayout(lxml:XML):void {
+      _layouts = new LayoutDefinitionFile(); 
+      _layouts.meetingModel = meetingModel;
+      
+        for each (var n:XML in lxml.layout) {
+          _layouts.parseLayout(n);
+        }
+    }
+    
     public function set layouts(l:LayoutDefinitionFile):void {
-      _layouts = l;
+//      _layouts = l;
     }
     
     public function getDefaultLayout():LayoutDefinition {

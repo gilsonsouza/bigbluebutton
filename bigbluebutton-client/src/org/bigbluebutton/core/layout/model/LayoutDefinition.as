@@ -21,6 +21,7 @@ package org.bigbluebutton.core.layout.model {
   import org.bigbluebutton.common.IBbbModuleWindow;
   import org.bigbluebutton.core.user.model.MeetingModel;
   import org.bigbluebutton.main.views.MainDisplay;
+  import org.bigbluebutton.main.views.layout.ViewLayout;
   import org.bigbluebutton.main.views.layout.WindowLayout;
 
   public class LayoutDefinition {
@@ -34,8 +35,9 @@ package org.bigbluebutton.core.layout.model {
     
     [Bindable] public var name:String;
     // default is a reserved word in actionscript
-    [Bindable] public var defaultLayout:Boolean = false;
-    private var _windows:Dictionary = new Dictionary();
+    [Bindable] public var isDefaultLayout:Boolean = false;
+    
+    private var _views:Dictionary = new Dictionary();
     
     static private var _ignoredWindows:Array = new Array("PublishWindow", "VideoWindow", "DesktopPublishWindow", 
                                                           "DesktopViewWindow", "LogWindow");
@@ -52,35 +54,19 @@ package org.bigbluebutton.core.layout.model {
       }
       
       if (vxml.@default != undefined) {
-        defaultLayout = (vxml.@default.toString().toUpperCase() == "TRUE") ? true : false;
+        isDefaultLayout = (vxml.@default.toString().toUpperCase() == "TRUE") ? true : false;
       }
       
       var role:String = Role.ALL; 
       for each (var n:XML in vxml.view) {
-        var window:WindowLayout = new WindowLayout();
+        var viewLayout:ViewLayout = new ViewLayout();
         if (n.@role != undefined && _roles.indexOf(n.@role.toString().toUpperCase()) != -1) {
           role = n.@role.toString().toUpperCase();
         }
-        _windows[role] = window;
-        LogUtil.debug("VIEW = [" + role + "]\n" + n.toXMLString());
-        window.load(n);
-      }
+        _views[role] = viewLayout;
         
-/*        
-      var role:String = Role.VIEWER;
-      if (vxml.@role != undefined && _roles.indexOf(vxml.@role.toString().toUpperCase()) != -1) {
-        role = vxml.@role.toString().toUpperCase();
-      }
-      
-      if (!_windows.hasOwnProperty(role))
-        _windows[role] = new Dictionary();
-      
-      for each (var n:XML in vxml.window) {
-        var window:WindowLayout = new WindowLayout();
-        window.load(n);
-        _windows[role][window.name] = window;
-      }
-   */   
+        viewLayout.parseViewLayouts(n);
+      }   
     }
     
     public function load(vxml:XML):void {
@@ -96,20 +82,20 @@ package org.bigbluebutton.core.layout.model {
     }
 
     private function get myLayout():Dictionary {
-      var hasViewerLayout:Boolean = _windows.hasOwnProperty(Role.VIEWER);
-      var hasModeratorLayout:Boolean = _windows.hasOwnProperty(Role.MODERATOR);
-      var hasPresenterLayout:Boolean = _windows.hasOwnProperty(Role.PRESENTER);
+      var hasViewerLayout:Boolean = _views.hasOwnProperty(Role.VIEWER);
+      var hasModeratorLayout:Boolean = _views.hasOwnProperty(Role.MODERATOR);
+      var hasPresenterLayout:Boolean = _views.hasOwnProperty(Role.PRESENTER);
       
       if (meetingModel.amIPresenter() && hasPresenterLayout)
-        return _windows[Role.PRESENTER];
+        return _views[Role.PRESENTER];
       else if (meetingModel.amIModerator() && hasModeratorLayout)
-        return _windows[Role.MODERATOR];
+        return _views[Role.MODERATOR];
       else if (hasViewerLayout) 
-        return _windows[Role.VIEWER];
+        return _views[Role.VIEWER];
       else if (hasModeratorLayout)
-        return _windows[Role.MODERATOR];
+        return _views[Role.MODERATOR];
       else if (hasPresenterLayout)
-        return _windows[Role.PRESENTER];
+        return _views[Role.PRESENTER];
       else {
         LogUtil.error("There's no layout that fits the participants profile");
         return null;
@@ -123,7 +109,7 @@ package org.bigbluebutton.core.layout.model {
     private function windowsToXml(windows:Dictionary):XML {
       var xml:XML = <layout/>;
       xml.@name = name;
-      if (defaultLayout)
+      if (isDefaultLayout)
         xml.@default = true;
       for each (var value:WindowLayout in windows) {
         xml.appendChild(value.toXml());
@@ -135,8 +121,8 @@ package org.bigbluebutton.core.layout.model {
       var xml:XML = <layout-block/>;
       var tmp:XML;
       for each (var value:String in _roles) {
-        if (_windows.hasOwnProperty(value)) {
-          tmp = windowsToXml(_windows[value]);
+        if (_views.hasOwnProperty(value)) {
+          tmp = windowsToXml(_views[value]);
           if (value != Role.VIEWER)
             tmp.@role = value;
           xml.appendChild(tmp);
@@ -236,11 +222,11 @@ package org.bigbluebutton.core.layout.model {
       //LogUtil.debug("CHAD: Canvas is " + (canvas == null ? "null" : "not null") + ", Name is " + (name == null ? "null" : "not null"));
       var layoutDefinition:LayoutDefinition = new LayoutDefinition();
       layoutDefinition.name = name;
-      layoutDefinition._windows[Role.VIEWER] = new Dictionary();
+      layoutDefinition._views[Role.VIEWER] = new Dictionary();
       for each (var window:MDIWindow in canvas.windowManager.windowList) {
         var layout:WindowLayout = WindowLayout.getLayout(canvas, window);
         if (!ignoreWindowByType(layout.name))
-          layoutDefinition._windows[Role.VIEWER][layout.name] = layout;
+          layoutDefinition._views[Role.VIEWER][layout.name] = layout;
       }
       return layoutDefinition;
     }
