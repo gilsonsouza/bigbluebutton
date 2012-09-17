@@ -218,10 +218,7 @@ package org.bigbluebutton.core.user.services {
       }
     }
     
-
-    
-
-    
+   
     /**
      * Called by the server to tell the client that the meeting has ended.
      */

@@ -19,6 +19,7 @@
  */
 package org.bigbluebutton.core.layout.model {
   import org.bigbluebutton.common.IBbbModuleWindow;
+  import org.bigbluebutton.core.user.model.MeetingModel;
   import org.bigbluebutton.main.views.MainDisplay;
   import org.bigbluebutton.main.views.layout.WindowLayout;
 
@@ -27,8 +28,9 @@ package org.bigbluebutton.core.layout.model {
     import flexlib.mdi.containers.MDIWindow;    
     import org.bigbluebutton.common.LogUtil;
     import org.bigbluebutton.common.Role;
-    import org.bigbluebutton.core.managers.UserManager;
     import org.bigbluebutton.core.layout.managers.OrderManager;
+    
+    public var meetingModel:MeetingModel;
     
     [Bindable] public var name:String;
     // default is a reserved word in actionscript
@@ -98,9 +100,9 @@ package org.bigbluebutton.core.layout.model {
       var hasModeratorLayout:Boolean = _windows.hasOwnProperty(Role.MODERATOR);
       var hasPresenterLayout:Boolean = _windows.hasOwnProperty(Role.PRESENTER);
       
-      if (UserManager.getInstance().getConference().amIPresenter() && hasPresenterLayout)
+      if (meetingModel.amIPresenter() && hasPresenterLayout)
         return _windows[Role.PRESENTER];
-      else if (UserManager.getInstance().getConference().amIModerator() && hasModeratorLayout)
+      else if (meetingModel.amIModerator() && hasModeratorLayout)
         return _windows[Role.MODERATOR];
       else if (hasViewerLayout) 
         return _windows[Role.VIEWER];

@@ -3,11 +3,13 @@ package org.bigbluebutton.core.layout.model
   import mx.collections.ArrayList;
   
   import org.bigbluebutton.common.LogUtil;
+  import org.bigbluebutton.core.user.model.MeetingModel;
 
   public class LayoutModel
-  {
-    private var _layouts:LayoutDefinitionFile;
+  {    
+    public var meetingModel:MeetingModel;
     
+    private var _layouts:LayoutDefinitionFile;    
     private var _currentLayout:LayoutDefinition;
     
     public function set layouts(l:LayoutDefinitionFile):void {

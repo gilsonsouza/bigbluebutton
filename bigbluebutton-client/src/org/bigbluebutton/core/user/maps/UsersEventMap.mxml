@@ -78,6 +78,10 @@
     <PropertyInjector targetKey="meetingModel" source="{ MeetingModel }"/>
     <PropertyInjector targetKey="usersModel" source="{ UsersModel }"/>
   </Injectors>
+
+  <Injectors target="{ MeetingModel }">
+    <PropertyInjector targetKey="usersModel" source="{ UsersModel }"/>
+  </Injectors>
   
 	<mx:Script>
 	<![CDATA[

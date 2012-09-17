@@ -20,14 +20,19 @@
 package org.bigbluebutton.core.layout.model
 {
   import flash.events.EventDispatcher;
+  import flash.events.IEventDispatcher;
   
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.core.EventBroadcaster;
   import org.bigbluebutton.core.layout.events.LayoutsLoadedEvent;
   import org.bigbluebutton.core.layout.model.LayoutDefinition;
   import org.bigbluebutton.core.model.Config;
+  import org.bigbluebutton.core.user.model.MeetingModel;
   
-  public class LayoutDefinitionFile extends EventDispatcher {
+  public class LayoutDefinitionFile {    
+    public var meetingModel:MeetingModel
+    public var dispatcher:IEventDispatcher;
+    
     private var _layouts:Array = new Array();
     
     public function get list():Array {

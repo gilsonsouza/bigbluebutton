@@ -43,28 +43,36 @@ package org.bigbluebutton.core.user.model
       
     }
     
-    private function getUserIndex(userid:String):Object {
+    private function getUserIndex(userID:String):Object {
       var aUser:User;
       
       for (var i:int = 0; i < _users.length; i++) {
         aUser = _users.getItemAt(i) as User;
         
-        if (aUser.userid == userid) {
+        if (aUser.userid == userID) {
           return {index:i, user:aUser};
         }
       }				
       
-      // Participant not found.
+      // User not found.
       return null;
     }
     
-    private function hasUser(userid:String):Boolean {
-      var p:Object = getUserIndex(userid);
+    public function hasUser(userID:String):Boolean {
+      var p:Object = getUserIndex(userID);
       if (p != null) {
         return true;
       }
       
       return false;		
+    }
+    
+    public function getUser(userID:String):User {
+      var u:Object = getUserIndex(userID);
+      if (u != null) {
+        return u.user;
+      }
+      return null;
     }
     
     /**
