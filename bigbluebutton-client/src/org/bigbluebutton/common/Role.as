@@ -20,6 +20,8 @@ package org.bigbluebutton.common
 {
 	public class Role
 	{
+    static public var roles:Array = new Array(Role.ALL, Role.VIEWER, Role.MODERATOR, Role.PRESENTER);
+    
     public static const ALL:String = "ALL";
 		public static const VIEWER:String = "VIEWER";
 		public static const PRESENTER:String = "PRESENTER";

@@ -1,7 +1,6 @@
 package org.bigbluebutton.main.views.layout
 {
-  import com.asfusion.mate.events.Dispatcher;
-  
+  import com.asfusion.mate.events.Dispatcher;  
   import flash.events.Event;
   import flash.events.EventDispatcher;
   import flash.events.IEventDispatcher;
@@ -15,8 +14,7 @@ package org.bigbluebutton.main.views.layout
   import flexlib.mdi.containers.MDIWindow;
   import flexlib.mdi.events.MDIManagerEvent;  
   import mx.controls.Alert;
-  import mx.events.ResizeEvent;
-  
+  import mx.events.ResizeEvent;  
   import org.bigbluebutton.common.IBbbModuleWindow;
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.core.EventBroadcaster;

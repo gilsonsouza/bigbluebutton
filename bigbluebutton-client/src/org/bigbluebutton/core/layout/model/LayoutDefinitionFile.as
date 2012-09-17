@@ -50,10 +50,11 @@ package org.bigbluebutton.core.layout.model
       
       if (layoutDefinition == null) {
         layoutDefinition = new LayoutDefinition();
-        layoutDefinition.load(xml);
+        layoutDefinition.meetingModel = meetingModel;
+        layoutDefinition.parseLayout(xml);
         _layouts.push(layoutDefinition);
       } else {
-        layoutDefinition.load(xml);
+        layoutDefinition.parseLayout(xml);
       }
     }
     

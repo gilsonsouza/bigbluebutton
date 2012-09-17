@@ -41,7 +41,7 @@ package org.bigbluebutton.core.layout.model {
     
     static private var _ignoredWindows:Array = new Array("PublishWindow", "VideoWindow", "DesktopPublishWindow", 
                                                           "DesktopViewWindow", "LogWindow");
-    static private var _roles:Array = new Array(Role.ALL, Role.VIEWER, Role.MODERATOR, Role.PRESENTER);
+    
     
     public function displayWindow(window:IBbbModuleWindow, display:MainDisplay):void {
       LogUtil.warn("LayoutDefinition: Displaying Window [" + window.getWindowID() + "]");
@@ -56,20 +56,15 @@ package org.bigbluebutton.core.layout.model {
       if (vxml.@default != undefined) {
         isDefaultLayout = (vxml.@default.toString().toUpperCase() == "TRUE") ? true : false;
       }
-      
-      var role:String = Role.ALL; 
-      for each (var n:XML in vxml.view) {
+           
+      for each (var n:XML in vxml.view) {      
         var viewLayout:ViewLayout = new ViewLayout();
-        if (n.@role != undefined && _roles.indexOf(n.@role.toString().toUpperCase()) != -1) {
-          role = n.@role.toString().toUpperCase();
-        }
-        _views[role] = viewLayout;
-        
         viewLayout.parseViewLayouts(n);
+        _views[viewLayout.role] = viewLayout;        
       }   
     }
     
-    public function load(vxml:XML):void {
+    public function parseLayout(vxml:XML):void {
       if (vxml == null)
         return;
       
@@ -120,14 +115,14 @@ package org.bigbluebutton.core.layout.model {
     public function toXml():XML {
       var xml:XML = <layout-block/>;
       var tmp:XML;
-      for each (var value:String in _roles) {
-        if (_views.hasOwnProperty(value)) {
-          tmp = windowsToXml(_views[value]);
-          if (value != Role.VIEWER)
-            tmp.@role = value;
-          xml.appendChild(tmp);
-        }
-      }
+//      for each (var value:String in _roles) {
+//        if (_views.hasOwnProperty(value)) {
+//          tmp = windowsToXml(_views[value]);
+//          if (value != Role.VIEWER)
+//            tmp.@role = value;
+//          xml.appendChild(tmp);
+//        }
+//      }
       return xml;
     }
     

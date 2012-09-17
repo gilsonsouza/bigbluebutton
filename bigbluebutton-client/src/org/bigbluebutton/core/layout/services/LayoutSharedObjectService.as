@@ -179,7 +179,7 @@ package org.bigbluebutton.core.layout.services
         LogUtil.debug("LayoutService: handling remote layout");
         LogUtil.debug(layout);
         var layoutDefinition:LayoutDefinition = new LayoutDefinition();
-        layoutDefinition.load(new XML(layout));
+        layoutDefinition.parseLayout(new XML(layout));
         layoutDefinition.name = "[" + ResourceUtil.getInstance().getString('bbb.layout.combo.remote') + "] " + layoutDefinition.name;  
         var redefineLayout:RedefineLayoutEvent = new RedefineLayoutEvent();
         redefineLayout.layout = layoutDefinition;
