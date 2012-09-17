@@ -113,7 +113,7 @@ package org.bigbluebutton.main.views.layout
     private function applyLayout(layout:LayoutDefinition):void {
       _detectContainerChange = false;
       if (layout != null) {
-        layout.applyToCanvas(_canvas);
+//        layout.applyToCanvas(_canvas);
       }
         
       updateCurrentLayout(layout);
@@ -141,9 +141,9 @@ package org.bigbluebutton.main.views.layout
     
     private function checkPermissionsOverWindow(window:MDIWindow=null):void {
       if (window != null) {
-        if (!UserManager.getInstance().getConference().amIModerator() && !LayoutDefinition.ignoreWindow(window)) {
-          window.draggable = window.resizable = window.showControls = !_locked;
-        }
+//        if (!UserManager.getInstance().getConference().amIModerator() && !LayoutDefinition.ignoreWindow(window)) {
+//          window.draggable = window.resizable = window.showControls = !_locked;
+//        }
       } else {
         for each (window in _canvas.windowManager.windowList) {
           checkPermissionsOverWindow(window);
@@ -171,8 +171,8 @@ package org.bigbluebutton.main.views.layout
     //    }
     
     private function onActionOverWindowFinished(e:MDIManagerEvent):void {
-      if (LayoutDefinition.ignoreWindow(e.window))
-        return;
+//      if (LayoutDefinition.ignoreWindow(e.window))
+//        return;
       
       checkPermissionsOverWindow(e.window);
       if (_detectContainerChange) {
@@ -192,8 +192,9 @@ package org.bigbluebutton.main.views.layout
     }
     
     private function updateCurrentLayout(layout:LayoutDefinition=null):LayoutDefinition {
-      _currentLayout = (layout != null? layout: LayoutDefinition.getLayout(_canvas, ResourceUtil.getInstance().getString('bbb.layout.combo.customName')));
-      return _currentLayout;
+//      _currentLayout = (layout != null? layout: LayoutDefinition.getLayout(_canvas, ResourceUtil.getInstance().getString('bbb.layout.combo.customName')));
+//      return _currentLayout;
+      return null;
     }
     
     /*

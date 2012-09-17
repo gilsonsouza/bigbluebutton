@@ -45,7 +45,11 @@ package org.bigbluebutton.core.layout.model {
     
     public function displayWindow(window:IBbbModuleWindow, display:MainDisplay):void {
       LogUtil.warn("LayoutDefinition: Displaying Window [" + window.getWindowID() + "]");
-      applyToWindow(display, window as MDIWindow);
+      var myLayout:ViewLayout = getMyLayout();
+      if (myLayout != null) {
+        LogUtil.debug("Displaying window using layout [" + name + "] role=[" + myLayout.role + "]");
+        myLayout.displayWindow(window, display);
+      }
     }
     
     private function loadLayout(vxml:XML):void {
@@ -76,11 +80,15 @@ package org.bigbluebutton.core.layout.model {
       }
     }
 
-    private function get myLayout():Dictionary {
+    private function getMyLayout():ViewLayout {
+      var hasAllLayout:Boolean = _views.hasOwnProperty(Role.ALL);
       var hasViewerLayout:Boolean = _views.hasOwnProperty(Role.VIEWER);
       var hasModeratorLayout:Boolean = _views.hasOwnProperty(Role.MODERATOR);
       var hasPresenterLayout:Boolean = _views.hasOwnProperty(Role.PRESENTER);
       
+      LogUtil.debug("Determining my layout - presenter?=" + meetingModel.amIPresenter() + ", hasPresenterLayout?=" 
+            + hasPresenterLayout + ", moderator?=" + meetingModel.amIModerator() + ", hasModeratorLayout?=" 
+            + hasModeratorLayout);
       if (meetingModel.amIPresenter() && hasPresenterLayout)
         return _views[Role.PRESENTER];
       else if (meetingModel.amIModerator() && hasModeratorLayout)
@@ -91,16 +99,18 @@ package org.bigbluebutton.core.layout.model {
         return _views[Role.MODERATOR];
       else if (hasPresenterLayout)
         return _views[Role.PRESENTER];
+      else if (hasAllLayout)
+        return _views[Role.ALL];
       else {
         LogUtil.error("There's no layout that fits the participants profile");
         return null;
       }
     }
-    
-    public function windowLayout(name:String):WindowLayout {
+/*    
+    public function windowLayout(name:String):ViewLayout {
       return myLayout[name];
     }
-    
+*/    
     private function windowsToXml(windows:Dictionary):XML {
       var xml:XML = <layout/>;
       xml.@name = name;
@@ -146,7 +156,7 @@ package org.bigbluebutton.core.layout.model {
       if (b.order == -1) return -1;
       return (a.order < b.order? 1: -1);
     }
-    
+    /*      
     private function adjustWindowsOrder(canvas:MainDisplay):void {
       var orderedList:Array = new Array();
       var type:String;
@@ -188,22 +198,22 @@ package org.bigbluebutton.core.layout.model {
       }
     }
     
+     
     public function applyToWindow(canvas:MainDisplay, window:MDIWindow, type:String=null):void {
       LogUtil.debug("LayoutDefinition: applyToWindow");
       if (type == null) {
         type = WindowLayout.getType(window);
       }
         
-
       LogUtil.debug("LayoutDefinition: applyToWindow - type=[" + type + "]");
       
       if (!ignoreWindowByType(type)) {
-        LogUtil.debug("LayoutDefinition: applyToWindow - setLayout [" + type + "]");
+        LogUtil.debug("LayoutDefinition: applyToWindow - setLayout [" + type + "] mylayout [" + myLayout[type] + "]");
         WindowLayout.setLayout(canvas, window, myLayout[type]);
       }
         
     }
-    
+   
     static private function ignoreWindowByType(type:String):Boolean {
       return (_ignoredWindows.indexOf(type) != -1);
     }
@@ -225,5 +235,6 @@ package org.bigbluebutton.core.layout.model {
       }
       return layoutDefinition;
     }
+*/
   }
 }

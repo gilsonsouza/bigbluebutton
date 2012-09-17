@@ -18,6 +18,7 @@
  * Author: Felipe Cecagno <felipe@mconf.org>
  */
 package org.bigbluebutton.main.views.layout {
+  import org.bigbluebutton.common.IBbbModuleWindow;
   import org.bigbluebutton.main.views.MainDisplay;
 
   public class WindowLayout {
@@ -35,52 +36,76 @@ package org.bigbluebutton.main.views.layout {
     import flash.events.TimerEvent;
     import org.bigbluebutton.common.LogUtil;
     import org.bigbluebutton.core.layout.managers.OrderManager;
-
-    [Bindable] public var name:String;
-    [Bindable] public var width:Number;
-    [Bindable] public var height:Number;
-    [Bindable] public var x:Number;
-    [Bindable] public var y:Number;
-    [Bindable] public var minimized:Boolean = false;
-    [Bindable] public var maximized:Boolean = false;
-    [Bindable] public var hidden:Boolean = false;
-    [Bindable] public var order:int = -1;
-    
+/*
+    private var _name:String;
+    private var _width:Number;
+    private var _height:Number;
+    private var _x:Number;
+    private var _y:Number;
+    private var _minimized:Boolean = false;
+    private var _maximized:Boolean = false;
+    private var _hidden:Boolean = false;
+    private var _order:int = -1;
+*/    
     static private var EVENT_DURATION:int = 500;
 
+    private var wlm:WindowLayoutModel = new WindowLayoutModel();
+    
+    public function get name():String {
+      return wlm.name;
+    }
+    
     public function parseWindow(vxml:XML):void {
 //      LogUtil.debug("******** WindowLayout View = \n" + vxml.toXMLString());
       if (vxml != null) {
         if (vxml.@name != undefined) {
-          name = vxml.@name.toString();
+          wlm.name = vxml.@name.toString();
         }
         if (vxml.@width != undefined) {
-          width = Number(vxml.@width);
+          wlm.width = Number(vxml.@width);
         }
         if (vxml.@height != undefined) {
-          height = Number(vxml.@height);
+          wlm.height = Number(vxml.@height);
         }
         if (vxml.@x != undefined) {
-          x = Number(vxml.@x);
+          wlm.x = Number(vxml.@x);
         }
         if (vxml.@y != undefined) {
-          y = Number(vxml.@y);
+          wlm.y = Number(vxml.@y);
         }
         if (vxml.@minimized != undefined) {
-          minimized = (vxml.@minimized.toString().toUpperCase() == "TRUE") ? true : false;
+          wlm.minimized = (vxml.@minimized.toString().toUpperCase() == "TRUE") ? true : false;
         }
         if (vxml.@maximized != undefined) {
-          maximized = (vxml.@maximized.toString().toUpperCase() == "TRUE") ? true : false;
+          wlm.maximized = (vxml.@maximized.toString().toUpperCase() == "TRUE") ? true : false;
         }
         if (vxml.@hidden != undefined) {
-          hidden = (vxml.@hidden.toString().toUpperCase() == "TRUE") ? true : false;
+          wlm.hidden = (vxml.@hidden.toString().toUpperCase() == "TRUE") ? true : false;
         }
         if (vxml.@order != undefined) {
-          order = int(vxml.@order);
+          wlm.order = int(vxml.@order);
         }
       }
     }
     
+    public function displayWindow(window:IBbbModuleWindow, display:MainDisplay):void {
+      determineHowToDisplayWindow(window as MDIWindow, display);
+      applyToWindow(window as MDIWindow, display);
+    }
+    
+    private function determineHowToDisplayWindow(window:MDIWindow, display:MainDisplay):void {      
+//      wlm.name = getType(window);
+      wlm.width = window.width / display.width;
+      wlm.height = window.height / display.height;
+      wlm.x = window.x / display.width;
+      wlm.y = window.y / display.height;
+      wlm.minimized = window.minimized;
+      wlm.maximized = window.maximized;
+      wlm.hidden = !window.visible;
+      wlm.order = OrderManager.getInstance().getOrderByRef(window);   
+    }
+
+    /*
     static public function getLayout(canvas:MainDisplay, window:MDIWindow):WindowLayout {
       var layout:WindowLayout = new WindowLayout();
       layout.name = getType(window);
@@ -103,7 +128,7 @@ package org.bigbluebutton.main.views.layout {
       LogUtil.info("WindowLayout: layout is NOT null!");
       layout.applyToWindow(canvas, window);
     }
-    
+*/    
     private var _delayedEffects:Array = new Array();
     private function delayEffect(canvas:MainDisplay, window:MDIWindow):void {
       var obj:Object = {canvas:canvas, window:window};
@@ -118,41 +143,41 @@ package org.bigbluebutton.main.views.layout {
       applyToWindow(obj.canvas, obj.window);
     }
     
-    public function applyToWindow(canvas:MainDisplay, window:MDIWindow):void {
+    private function applyToWindow(window:MDIWindow, display:MainDisplay):void {
       LogUtil.info("WindowLayout: Try to display window!");
       var effect:Parallel = new Parallel();
       effect.duration = EVENT_DURATION;
       effect.target = window;
       
-      if (this.minimized) {
+      if (wlm.minimized) {
         LogUtil.info("WindowLayout: Window is minimized!");
         if (!window.minimized) {
           LogUtil.info("WindowLayout: Minimizing window!");
           window.minimize();
         }
-      } else if (this.maximized) {
+      } else if (wlm.maximized) {
         LogUtil.info("WindowLayout: Window is maximized!");
         if (!window.maximized) {
           LogUtil.info("WindowLayout: Maximizing window!");
           window.maximize();
         }
-      } else if (window.minimized && !this.minimized && !this.hidden) {
+      } else if (window.minimized && !wlm.minimized && !wlm.hidden) {
         LogUtil.info("WindowLayout: Unminimizing window!");
         window.unMinimize();
-        delayEffect(canvas, window);
+        delayEffect(display, window);
         return;
-      } else if (window.maximized && !this.maximized && !this.hidden) {
+      } else if (window.maximized && !wlm.maximized && !wlm.hidden) {
         LogUtil.info("WindowLayout: Restoring window!");
         window.maximizeRestore();
-        delayEffect(canvas, window);
+        delayEffect(display, window);
         return;
       } else {
-        if (!this.hidden) {
+        if (!wlm.hidden) {
           LogUtil.info("WindowLayout: Window not hidden!");
-          var newWidth:int = int(this.width * canvas.width);
-          var newHeight:int = int(this.height * canvas.height);
-          var newX:int = int(this.x * canvas.width);
-          var newY:int = int(this.y * canvas.height);
+          var newWidth:int = int(wlm.width * display.width);
+          var newHeight:int = int(wlm.height * display.height);
+          var newX:int = int(wlm.x * display.width);
+          var newY:int = int(wlm.y * display.height);
           
           if (newX != window.x || newY != window.y) {
             var mover:Move = new Move();
@@ -171,7 +196,7 @@ package org.bigbluebutton.main.views.layout {
         }
       }
       
-      var layoutHidden:Boolean = this.hidden;
+      var layoutHidden:Boolean = wlm.hidden;
 //      var windowVisible:Boolean = (window.alpha == 1);
       var windowVisible:Boolean = window.visible;
       if (windowVisible == layoutHidden) {
@@ -206,39 +231,39 @@ package org.bigbluebutton.main.views.layout {
     
     public function toAbsoluteXml(canvas:MainDisplay):XML {
       var xml:XML = <window/>;
-      xml.@name = name;
-      if (minimized)
+      xml.@name = wlm.name;
+      if (wlm.minimized)
         xml.@minimized = true;
-      else if (maximized)
+      else if (wlm.maximized)
         xml.@maximized = true;
-      else if (hidden)
+      else if (wlm.hidden)
         xml.@hidden = true;
       else {
-        xml.@width = int(width * canvas.width);
-        xml.@height = int(height * canvas.height);
-        xml.@x = int(x * canvas.width);
-        xml.@y = int(y * canvas.height);
+        xml.@width = int(wlm.width * canvas.width);
+        xml.@height = int(wlm.height * canvas.height);
+        xml.@x = int(wlm.x * canvas.width);
+        xml.@y = int(wlm.y * canvas.height);
       }
-      xml.@order = order;
+      xml.@order = wlm.order;
       return xml;
     }
     
     public function toXml():XML {
       var xml:XML = <window/>;
-      xml.@name = name;
-      if (minimized)
+      xml.@name = wlm.name;
+      if (wlm.minimized)
         xml.@minimized = true;
-      else if (maximized)
+      else if (wlm.maximized)
         xml.@maximized = true;
-      else if (hidden)
+      else if (wlm.hidden)
         xml.@hidden = true;
       else {
-        xml.@width = width;
-        xml.@height = height;
-        xml.@x = x;
-        xml.@y = y;
+        xml.@width = wlm.width;
+        xml.@height = wlm.height;
+        xml.@x = wlm.x;
+        xml.@y = wlm.y;
       }
-      xml.@order = order;
+      xml.@order = wlm.order;
       return xml;      
     }  
   }

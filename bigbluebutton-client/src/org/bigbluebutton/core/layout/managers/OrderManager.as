@@ -21,11 +21,12 @@ package org.bigbluebutton.core.layout.managers
 {
 
   import flash.utils.Dictionary;
-
+  
   import flexlib.mdi.containers.MDIWindow;
-
+  
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.core.layout.model.LayoutDefinition;
+  import org.bigbluebutton.main.views.layout.ViewLayout;
   import org.bigbluebutton.main.views.layout.WindowLayout;
 
   public class OrderManager {
@@ -57,7 +58,7 @@ package org.bigbluebutton.core.layout.managers
     }
 
     public function bringToFront(window:MDIWindow):void {
-      if (LayoutDefinition.ignoreWindow(window))
+      if (ViewLayout.ignoreWindow(window))
         return;
       
       var type:String = WindowLayout.getType(window);

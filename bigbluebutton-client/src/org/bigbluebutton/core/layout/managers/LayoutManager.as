@@ -49,6 +49,7 @@ package org.bigbluebutton.core.layout.managers
   import org.bigbluebutton.core.managers.UserManager;
   import org.bigbluebutton.core.model.Config;
   import org.bigbluebutton.main.views.MainDisplay;
+  import org.bigbluebutton.main.views.layout.ViewLayout;
   import org.bigbluebutton.main.views.layout.WindowLayout;
   import org.bigbluebutton.util.i18n.ResourceUtil;
   
@@ -211,11 +212,11 @@ package org.bigbluebutton.core.layout.managers
     }
     
     private function applyLayout(layout:LayoutDefinition):void {
-      _detectContainerChange = false;
-      if (layout != null)
-        layout.applyToCanvas(_canvas);
-      updateCurrentLayout(layout);
-      _detectContainerChange = true;
+//      _detectContainerChange = false;
+//      if (layout != null)
+//        layout.applyToCanvas(_canvas);
+//      updateCurrentLayout(layout);
+//      _detectContainerChange = true;
     }
 
     public function redefineLayout(e:RedefineLayoutEvent):void {
@@ -240,7 +241,7 @@ package org.bigbluebutton.core.layout.managers
     private function checkPermissionsOverWindow(window:MDIWindow=null):void {
       if (window != null) {
         if (!UserManager.getInstance().getConference().amIModerator()
-            && !LayoutDefinition.ignoreWindow(window)) {
+            && !ViewLayout.ignoreWindow(window)) {
           window.draggable 
               = window.resizable
               = window.showControls
@@ -273,7 +274,7 @@ package org.bigbluebutton.core.layout.managers
 //    }
     
     private function onActionOverWindowFinished(e:MDIManagerEvent):void {
-      if (LayoutDefinition.ignoreWindow(e.window))
+      if (ViewLayout.ignoreWindow(e.window))
         return;
         
       checkPermissionsOverWindow(e.window);
@@ -294,8 +295,9 @@ package org.bigbluebutton.core.layout.managers
     }
     
     private function updateCurrentLayout(layout:LayoutDefinition=null):LayoutDefinition {
-      _currentLayout = (layout != null? layout: LayoutDefinition.getLayout(_canvas, ResourceUtil.getInstance().getString('bbb.layout.combo.customName')));
-      return _currentLayout;
+ //     _currentLayout = (layout != null? layout: LayoutDefinition.getLayout(_canvas, ResourceUtil.getInstance().getString('bbb.layout.combo.customName')));
+ //     return _currentLayout;
+      return null;
     }
     
     /*
