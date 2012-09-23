@@ -33,6 +33,7 @@ package org.bigbluebutton.main.views.layout
   import org.bigbluebutton.core.layout.model.LayoutModel;
   import org.bigbluebutton.core.managers.UserManager;
   import org.bigbluebutton.core.model.Config;
+  import org.bigbluebutton.core.user.model.MeetingModel;
   import org.bigbluebutton.main.views.MainDisplay;
   import org.bigbluebutton.util.i18n.ResourceUtil;
   
@@ -47,7 +48,7 @@ package org.bigbluebutton.main.views.layout
     private var _customLayoutsCount:int = 0;
     private var _eventsToDelay:Array = new Array(MDIManagerEvent.WINDOW_RESTORE,
                                               MDIManagerEvent.WINDOW_MINIMIZE, MDIManagerEvent.WINDOW_MAXIMIZE);
-    
+    public var meetingModel:MeetingModel;
     public var layoutModel:LayoutModel;
     public var dispatcher:IEventDispatcher;
     
@@ -111,7 +112,7 @@ package org.bigbluebutton.main.views.layout
     }
     
     private function sendLayoutUpdate(layout:LayoutDefinition):void {
-      if (_locked && UserManager.getInstance().getConference().amIModerator()) {
+      if (_locked && meetingModel.amIModerator()) {
         LogUtil.debug("LayoutManager: sending layout to remotes");
         var e:UpdateLayoutEvent = new UpdateLayoutEvent();
         e.layout = layout;
@@ -124,14 +125,6 @@ package org.bigbluebutton.main.views.layout
       for each (window in _canvas.windowManager.windowList) {
         displayWindow(window as IBbbModuleWindow, _canvas);
       }
-      
-//      _detectContainerChange = false;
-//      if (layout != null) {
-//        layout.applyToCanvas(_canvas);
-//      }
-        
-//      updateCurrentLayout(layout);
-//      _detectContainerChange = true;
     }
     
     public function redefineLayout(e:RedefineLayoutEvent):void {

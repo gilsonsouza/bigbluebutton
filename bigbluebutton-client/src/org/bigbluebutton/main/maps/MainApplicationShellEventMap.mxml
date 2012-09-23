@@ -25,6 +25,7 @@
     <![CDATA[
       import org.bigbluebutton.common.events.OpenWindowEvent;
       import org.bigbluebutton.core.layout.model.LayoutModel;
+      import org.bigbluebutton.core.user.model.MeetingModel;
       import org.bigbluebutton.main.events.AppVersionEvent;
       import org.bigbluebutton.main.events.LogWindowEvent;
       import org.bigbluebutton.main.views.MainApplicationShell;
@@ -46,7 +47,6 @@
     <MethodInvoker generator="{MainAppShellMediator}" cache="global" method="openWindowEventHandler" arguments="{event}"/>
   </EventHandlers>
   
-  
   <!-- Injectors ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->  
   <Injectors target="{ MainFooterBar }">
     <PropertyInjector targetKey="model" source="{ MainFooterBarModel }"/>
@@ -64,6 +64,7 @@
   </Injectors>
  
   <Injectors target="{ LayoutManager }">   
+    <PropertyInjector targetKey="meetingModel" source="{ MeetingModel }"/>
     <PropertyInjector targetKey="layoutModel" source="{ LayoutModel }"/>
     <PropertyInjector targetKey="dispatcher" source="{ scope.dispatcher }"/>
   </Injectors>

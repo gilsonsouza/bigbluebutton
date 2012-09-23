@@ -27,7 +27,6 @@
       import org.bigbluebutton.main.views.MainApplicationShell;
     ]]>
   </mx:Script>
-
   
   <!-- Injectors ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->  
   <Injectors target="{ MainApplicationShell }">
