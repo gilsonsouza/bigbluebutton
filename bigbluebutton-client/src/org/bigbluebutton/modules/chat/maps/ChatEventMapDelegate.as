@@ -29,6 +29,7 @@ package org.bigbluebutton.modules.chat.maps {
 	import org.bigbluebutton.modules.chat.events.StartChatModuleEvent;
 	import org.bigbluebutton.modules.chat.model.ChatOptions;
 	import org.bigbluebutton.modules.chat.views.ChatWindow;
+  import org.bigbluebutton.core.modules.events.ModuleEvent;
 	import org.bigbluebutton.util.i18n.ResourceUtil;
 	
 	public class ChatEventMapDelegate {
@@ -48,6 +49,17 @@ package org.bigbluebutton.modules.chat.maps {
 			globalDispatcher = new Dispatcher();
 		}
 
+    public function moduleStart(event:ModuleEvent):void {
+      
+      if (event.name != "ChatModule") return;
+      LogUtil.debug("ChatEventMapDelegate: Starting [" + event.name + "]");
+      LogUtil.debug("Starting ChatModule");
+      LogUtil.debug("Opening Chat Window");
+      var windowEvent:OpenWindowEvent = new OpenWindowEvent(OpenWindowEvent.OPEN_WINDOW_EVENT);
+//      windowEvent.window = new VideoDock();
+//      dispatcher.dispatchEvent(windowEvent);      
+    }
+    
 		private function getChatOptions():void {
 			chatOptions = new ChatOptions();
 		}

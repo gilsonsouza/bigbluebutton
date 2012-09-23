@@ -41,19 +41,14 @@
       import com.asfusion.mate.events.Dispatcher;
       import flash.events.Event;
       import flash.events.ProgressEvent;
-      import flash.events.IOErrorEvent;
-      
-      import mx.controls.Alert;
-      import mx.events.ResizeEvent;
-      
+      import flash.events.IOErrorEvent;      
+      import mx.events.ResizeEvent;      
       import flash.net.FileReference;
-
       import flexlib.mdi.managers.MDIManager;
       import flexlib.mdi.containers.MDICanvas;
       import flexlib.mdi.containers.MDIWindow;
       import flexlib.mdi.events.MDIManagerEvent;
-      import flexlib.mdi.events.MDIWindowEvent;
-      
+      import flexlib.mdi.events.MDIWindowEvent;      
       import org.bigbluebutton.common.IBbbModuleWindow;
       import org.bigbluebutton.common.Images;
       import org.bigbluebutton.common.LogUtil;

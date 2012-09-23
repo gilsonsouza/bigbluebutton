@@ -24,24 +24,25 @@
 	xmlns:mx="http://www.adobe.com/2006/mxml">
 	<mx:Script>
 		<![CDATA[
-			import org.bigbluebutton.modules.chat.views.ChatWindow;
-			import com.asfusion.mate.events.Dispatcher;
-			
-			import mx.events.FlexEvent;
-			
-			import org.bigbluebutton.main.events.ModuleStartedEvent;
-			import org.bigbluebutton.common.events.OpenWindowEvent;
-			import org.bigbluebutton.modules.chat.events.ChatEvent;
-			import org.bigbluebutton.modules.chat.events.ConnectionEvent;
-			import org.bigbluebutton.modules.chat.events.QueryParticipantsEvent;
-			import org.bigbluebutton.modules.chat.events.SendPrivateChatMessageEvent;
-			import org.bigbluebutton.modules.chat.events.SendPublicChatMessageEvent;
-			import org.bigbluebutton.modules.chat.events.StartChatModuleEvent;
-			import org.bigbluebutton.modules.chat.events.StopChatModuleEvent;
-			import org.bigbluebutton.modules.chat.events.TranscriptEvent;
-			import org.bigbluebutton.modules.chat.services.PrivateChatService;
-			import org.bigbluebutton.modules.chat.services.PublicChatService;
-			import org.bigbluebutton.modules.chat.views.ChatView;
+      import com.asfusion.mate.events.Dispatcher;
+      
+      import mx.events.FlexEvent;
+      
+      import org.bigbluebutton.common.events.OpenWindowEvent;
+      import org.bigbluebutton.core.modules.events.ModuleEvent;
+      import org.bigbluebutton.main.events.ModuleStartedEvent;
+      import org.bigbluebutton.modules.chat.events.ChatEvent;
+      import org.bigbluebutton.modules.chat.events.ConnectionEvent;
+      import org.bigbluebutton.modules.chat.events.QueryParticipantsEvent;
+      import org.bigbluebutton.modules.chat.events.SendPrivateChatMessageEvent;
+      import org.bigbluebutton.modules.chat.events.SendPublicChatMessageEvent;
+      import org.bigbluebutton.modules.chat.events.StartChatModuleEvent;
+      import org.bigbluebutton.modules.chat.events.StopChatModuleEvent;
+      import org.bigbluebutton.modules.chat.events.TranscriptEvent;
+      import org.bigbluebutton.modules.chat.services.PrivateChatService;
+      import org.bigbluebutton.modules.chat.services.PublicChatService;
+      import org.bigbluebutton.modules.chat.views.ChatView;
+      import org.bigbluebutton.modules.chat.views.ChatWindow;
 		]]>
 	</mx:Script>
 	
@@ -50,7 +51,11 @@
 		<ObjectBuilder generator="{PublicChatService}" />
 		<ObjectBuilder generator="{PrivateChatService}" />		
 	</EventHandlers>
-	
+
+  <EventHandlers type="{ModuleEvent.MODULE_START}" >
+    <MethodInvoker generator="{ChatEventMapDelegate}" cache="global" method="moduleStart" arguments="{event}"/>
+  </EventHandlers>	
+  
 	<EventHandlers type="{StartChatModuleEvent.START_CHAT_MODULE_EVENT}">        
    		<MethodInvoker generator="{PublicChatService}" method="setModuleAttributes" arguments="{event.attributes}" />
    		<MethodInvoker generator="{PublicChatService}" method="join"/>

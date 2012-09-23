@@ -19,8 +19,7 @@
  */
 package org.bigbluebutton.core.layout.services
 {
-  import com.asfusion.mate.events.Dispatcher;
-  
+  import com.asfusion.mate.events.Dispatcher; 
   import flash.events.AsyncErrorEvent;
   import flash.events.IEventDispatcher;
   import flash.events.NetStatusEvent;

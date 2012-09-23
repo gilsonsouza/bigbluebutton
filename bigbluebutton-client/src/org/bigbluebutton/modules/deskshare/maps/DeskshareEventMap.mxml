@@ -25,17 +25,17 @@
 
 	<mx:Script>
 		<![CDATA[
-			import org.bigbluebutton.modules.deskshare.managers.DeskshareManager;
-			import mx.events.FlexEvent;			
-			import org.bigbluebutton.main.events.BBBEvent;
-			import org.bigbluebutton.main.events.MadePresenterEvent;
-			import org.bigbluebutton.modules.deskshare.events.ModuleEvent;
-			import org.bigbluebutton.modules.deskshare.events.ShareEvent;
-			import org.bigbluebutton.modules.deskshare.events.ShareWindowEvent;
-			import org.bigbluebutton.modules.deskshare.events.StartedViewingEvent;
-			import org.bigbluebutton.modules.deskshare.events.StreamEvent;
-			import org.bigbluebutton.modules.deskshare.events.ViewStreamEvent;
-			import org.bigbluebutton.modules.deskshare.events.ViewWindowEvent;
+      import mx.events.FlexEvent;
+      import org.bigbluebutton.main.events.BBBEvent;
+      import org.bigbluebutton.main.events.MadePresenterEvent;
+      import org.bigbluebutton.modules.deskshare.events.ModuleEvent;
+      import org.bigbluebutton.modules.deskshare.events.ShareEvent;
+      import org.bigbluebutton.modules.deskshare.events.ShareWindowEvent;
+      import org.bigbluebutton.modules.deskshare.events.StartedViewingEvent;
+      import org.bigbluebutton.modules.deskshare.events.StreamEvent;
+      import org.bigbluebutton.modules.deskshare.events.ViewStreamEvent;
+      import org.bigbluebutton.modules.deskshare.events.ViewWindowEvent;
+      import org.bigbluebutton.modules.deskshare.managers.DeskshareManager;
 		]]>
 	</mx:Script>
 	<EventHandlers type="{FlexEvent.PREINITIALIZE}">
@@ -44,7 +44,13 @@
 		-->
 		<ObjectBuilder generator="{DeskshareManager}"/>		
 	</EventHandlers>
-		
+
+<!--  
+  <EventHandlers type="{ModuleEvent.MODULE_START}" >
+    <MethodInvoker generator="{DeskshareManager}" cache="global" method="moduleStart" arguments="{event}"/>
+  </EventHandlers>
+-->
+  
 	<EventHandlers type="{ShareEvent.START_SHARING}">
 		<MethodInvoker generator="{DeskshareManager}" method="handleStartSharingEvent" arguments="false"/>
 	</EventHandlers>

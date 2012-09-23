@@ -19,8 +19,10 @@
 
 package org.bigbluebutton.modules.deskshare.managers
 {
-	import com.asfusion.mate.events.Dispatcher;	
+	import com.asfusion.mate.events.Dispatcher;
+	
 	import org.bigbluebutton.common.LogUtil;
+	import org.bigbluebutton.core.modules.events.ModuleEvent;
 	import org.bigbluebutton.main.events.MadePresenterEvent;
 	import org.bigbluebutton.modules.deskshare.model.DeskshareOptions;
 	import org.bigbluebutton.modules.deskshare.services.DeskshareService;
@@ -42,6 +44,16 @@ package org.bigbluebutton.modules.deskshare.managers
 			toolbarButtonManager = new ToolbarButtonManager();		
 		}
 		
+    public function moduleStart(event:ModuleEvent):void {     
+      if (event.name != "DeskshareModule") return;
+      LogUtil.debug("DeskshareManager: Starting [" + event.name + "]");
+      LogUtil.debug("Starting DeskshareModule");
+//      LogUtil.debug("Opening DeskshareModule Window");
+//      var windowEvent:OpenWindowEvent = new OpenWindowEvent(OpenWindowEvent.OPEN_WINDOW_EVENT);
+      //      windowEvent.window = new VideoDock();
+      //      dispatcher.dispatchEvent(windowEvent);      
+    }
+    
 		public function handleStartModuleEvent(module:DeskShareModule):void {
 			LogUtil.debug("Deskshare Module starting");
 			this.module = module;			
