@@ -54,9 +54,11 @@ package org.bigbluebutton.main.views.layout
     public function LayoutManager() {
       LogUtil.debug("****************************** Layout Manager constructor! *************************");
       _applyCurrentLayoutTimer.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
+        LogUtil.debug("****************************** Applying layout *************************");
         applyLayout(_currentLayout);
       });
       _sendCurrentLayoutUpdateTimer.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
+        LogUtil.debug("****************************** Sending layout update *************************");
         sendLayoutUpdate(updateCurrentLayout());
       });
     }
@@ -70,12 +72,13 @@ package org.bigbluebutton.main.views.layout
       //          _canvas.windowManager.container.addEventListener(Event.ACTIVATE, onContainerActivated);
       //          _canvas.windowManager.container.addEventListener(Event.DEACTIVATE, onContainerDeactivated);
       
-      _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_RESIZE_END, onActionOverWindowFinished);
-      _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_DRAG_END, onActionOverWindowFinished);
-      _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_MINIMIZE, onActionOverWindowFinished);
-      _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_MAXIMIZE, onActionOverWindowFinished);
-      _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_RESTORE, onActionOverWindowFinished);
-      _canvas.windowManager.addEventListener(MDIManagerEvent.WINDOW_ADD, function(e:MDIManagerEvent):void {
+      // windowManager
+      _canvas.addEventListener(MDIManagerEvent.WINDOW_RESIZE_END, onActionOverWindowFinished);
+      _canvas.addEventListener(MDIManagerEvent.WINDOW_DRAG_END, onActionOverWindowFinished);
+      _canvas.addEventListener(MDIManagerEvent.WINDOW_MINIMIZE, onActionOverWindowFinished);
+      _canvas.addEventListener(MDIManagerEvent.WINDOW_MAXIMIZE, onActionOverWindowFinished);
+      _canvas.addEventListener(MDIManagerEvent.WINDOW_RESTORE, onActionOverWindowFinished);
+      _canvas.addEventListener(MDIManagerEvent.WINDOW_ADD, function(e:MDIManagerEvent):void {
         LogUtil.debug("****************************** LayoutManager MDIManagerEvent.WINDOW_ADD Listeners! *************************");
         checkPermissionsOverWindow(e.window);
         applyLayout(_currentLayout);
@@ -117,13 +120,18 @@ package org.bigbluebutton.main.views.layout
     }
     
     private function applyLayout(layout:LayoutDefinition):void {
-      _detectContainerChange = false;
-      if (layout != null) {
-//        layout.applyToCanvas(_canvas);
+      var window:MDIWindow;      
+      for each (window in _canvas.windowManager.windowList) {
+        displayWindow(window as IBbbModuleWindow, _canvas);
       }
+      
+//      _detectContainerChange = false;
+//      if (layout != null) {
+//        layout.applyToCanvas(_canvas);
+//      }
         
-      updateCurrentLayout(layout);
-      _detectContainerChange = true;
+//      updateCurrentLayout(layout);
+//      _detectContainerChange = true;
     }
     
     public function redefineLayout(e:RedefineLayoutEvent):void {
