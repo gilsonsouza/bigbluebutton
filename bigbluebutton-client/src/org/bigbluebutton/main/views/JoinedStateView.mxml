@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:views="org.bigbluebutton.main.views.*" width="100%" height="100%" xmlns:maps="org.bigbluebutton.main.maps.*">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+           xmlns:views="org.bigbluebutton.main.views.*" width="100%" height="100%" 
+           xmlns:maps="org.bigbluebutton.main.maps.*">
   <mx:VBox width="100%" height="100%">
-    <views:MainToolbar/>
+    <views:MainToolbar visible="true"/>
     <views:MainDisplay width="100%" height="100%"/>	
-    <views:MainFooterBar/>      
+    <views:MainFooterBar visible="true"/>      
   </mx:VBox>
 </mx:Canvas>

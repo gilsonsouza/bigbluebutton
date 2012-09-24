@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <layouts>
-  <layout name="Video Chat">
+  <layout name="Video Chat" default="true">
     <view role="all">
 	    <window name="ViewersWindow" minimized="true" order="3"/>
 	    <window name="VideoDock" width="1" height="1" x="0" y="0" order="0"/>
@@ -9,7 +9,7 @@
 	    <window name="ListenersWindow" minimized="true" order="2"/>    
     </view>
   </layout>
-  <layout name="Default" default="true">
+  <layout name="Default">
     <view role="all">
 	    <window name="ViewersWindow" width="0.1772793053545586" height="0.33643617021276595" x="0" y="0" />
 	    <window name="ListenersWindow" width="0.1772793053545586" height="0.33643617021276595" x="0" y="0.34308510638297873" />
