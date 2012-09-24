@@ -128,7 +128,7 @@
 		<MethodInvoker generator="{ModulesProxy}" method="startAllModules" />
 	</EventHandlers>
 
-  <!-- Injectors ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->  
+  <!-- ========================== Injectors ========================================== -->  
   <Injectors target="{ ConfigLoaderService }" >
     <ObjectBuilder generator="{ConfigModel}" cache="global"/>
     <PropertyInjector targetKey="dispatcher" source="{ scope.dispatcher }"/>

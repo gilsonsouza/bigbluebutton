@@ -47,7 +47,7 @@
     <MethodInvoker generator="{MainAppShellMediator}" cache="global" method="openWindowEventHandler" arguments="{event}"/>
   </EventHandlers>
   
-  <!-------------------------- Injectors ----------------->  
+  <!-- ====================== Injectors ========================== -->  
   <Injectors target="{ MainFooterBar }">
     <PropertyInjector targetKey="model" source="{ MainFooterBarModel }"/>
     <PropertyInjector targetKey="dispatcher" source="{ scope.dispatcher }"/>

@@ -28,7 +28,7 @@
     ]]>
   </mx:Script>
   
-  <!-- Injectors ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->  
+  <!-- =========================== Injectors ================================== -->  
   <Injectors target="{ MainApplicationShell }">
     <PropertyInjector targetKey="layoutModel" source="{ LayoutModel }"/>
   </Injectors>
