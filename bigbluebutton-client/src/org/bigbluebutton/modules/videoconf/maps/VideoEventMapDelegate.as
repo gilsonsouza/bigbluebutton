@@ -9,9 +9,8 @@ package org.bigbluebutton.modules.videoconf.maps
     {
     }
     
-    public function moduleStart(event:ModuleEvent):void {
-      
-      if (event.name != "VideoModule") return;
+    public function moduleStart(event:ModuleEvent):void {      
+      if (event.name != "VideoconfModule") return;
       LogUtil.debug("VideoEventMapDelegate: Starting [" + event.name + "]");
       LogUtil.debug("Starting VideoModule");
       LogUtil.debug("Opening Video Dock Window");
