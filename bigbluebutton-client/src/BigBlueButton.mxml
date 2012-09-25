@@ -28,26 +28,31 @@
 	xmlns:mate="http://mate.asfusion.com/"
 	xmlns:m="library://melomel/2010"
 	pageTitle="BigBlueButton"
-	layout="absolute" creationComplete="init()" 
+	layout="absolute" creationComplete="setupAPI()"
 	preloader="org.bigbluebutton.main.model.BigBlueButtonPreloader"
 	applicationComplete="hotkeyCapture()">
 	
 	<mx:Script>
 		<![CDATA[
-			import com.asfusion.mate.events.Dispatcher;			
-			import flash.events.Event;			
-			import mx.managers.HistoryManager;			
-			import org.bigbluebutton.common.LogUtil;
-			import org.bigbluebutton.common.events.AddUIComponentToMainCanvas;
-			import org.bigbluebutton.core.BBB;
-			import org.bigbluebutton.core.EventBroadcaster;
-			import org.bigbluebutton.core.managers.ConfigManager2;
-			import org.bigbluebutton.main.events.BBBEvent;
-			import org.bigbluebutton.main.events.ShortcutEvent;
-			import org.bigbluebutton.main.views.MainApplicationShell;
-			import org.bigbluebutton.util.i18n.ResourceUtil;
+      import com.asfusion.mate.events.Dispatcher;
+      
+      import flash.events.Event;
+      
+      import mx.managers.HistoryManager;
+      import mx.utils.URLUtil;
+      
+      import org.bigbluebutton.common.LogUtil;
+      import org.bigbluebutton.common.events.AddUIComponentToMainCanvas;
+      import org.bigbluebutton.core.BBB;
+      import org.bigbluebutton.core.EventBroadcaster;
+      import org.bigbluebutton.core.managers.ConfigManager2;
+      import org.bigbluebutton.main.api.Api;
+      import org.bigbluebutton.main.events.BBBEvent;
+      import org.bigbluebutton.main.events.ShortcutEvent;
+      import org.bigbluebutton.main.views.MainApplicationShell;
+      import org.bigbluebutton.util.i18n.ResourceUtil;
 			
-		private var langResources:ResourceUtil;
+      private var langResources:ResourceUtil = null;
 		
 		/**
 		 * Thse two lines are workaround for this. (ralam - Nov 8, 2008)
@@ -65,7 +70,33 @@
         langResources = ResourceUtil.getInstance();
 			}
 			
-
+      private var api:Api;
+      
+      private function setupAPI():void {
+        langResources = ResourceUtil.getInstance();
+        api = new Api();
+        Security.allowDomain(determineHTMLURL());
+        LogUtil.debug("Security.allowDomain(" + determineHTMLURL() + ");");
+      }
+      
+      private function determineHTMLURL():String {
+        var serverName:String = "*";
+        if(ExternalInterface.available) // import flash.external.ExternalInterface;
+        {
+          try
+          {
+            var htmlURL:String = String(ExternalInterface.call("window.location.href.toString"));
+            serverName = URLUtil.getServerNameWithPort(htmlURL);
+            //            Alert.show("HTML URL [" + htmlURL + "]");
+          }
+          catch(s:Error)
+          {
+            //            Alert.show("Cannot determine HTML URL");
+          }
+        }
+        
+        return serverName;
+      }
 
 			/**
 			 * Shortcut Keys

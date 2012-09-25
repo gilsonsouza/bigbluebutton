@@ -2,6 +2,9 @@ package org.bigbluebutton.core.layout.services
 {
   import flash.events.IEventDispatcher;
   
+  import mx.core.FlexGlobals;
+  import mx.utils.URLUtil;
+  
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.core.BBB;
   import org.bigbluebutton.core.config.model.ConfigModel;
@@ -12,6 +15,8 @@ package org.bigbluebutton.core.layout.services
 
   public class LayoutLoaderService
   {
+    private static const LAYOUT_XML:String = "client/conf/config.xml";
+    
     public var layoutModel:LayoutModel;
     public var configModel:ConfigModel;
     public var dispatcher:IEventDispatcher;
@@ -41,5 +46,12 @@ package org.bigbluebutton.core.layout.services
         LogUtil.error("LayoutLoaderService: layouts not loaded (" + event.error.message + ")");
       }      
     }   
+    
+    private function buildRequestURL():String {
+      var swfURL:String = FlexGlobals.topLevelApplication.url;
+      var protocol:String = URLUtil.getProtocol(swfURL);
+      var serverName:String = URLUtil.getServerNameWithPort(swfURL);        
+      return protocol + "://" + serverName + "/" + LAYOUT_XML;
+    }
   }
 }

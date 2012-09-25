@@ -9,7 +9,7 @@
     <skinning enabled="false" url="branding/css/theme.css.swf" />
     <layout showLogButton="false" showVideoLayout="false" showResetLayout="true" 
             showToolbar="true" showHelpButton="true" showLogoutWindow="true" 
-            layoutConfig="conf/layout.xml" enableEdit="true"/>
+            layoutConfig="http://HOST/client/conf/layout.xml" enableEdit="true"/>
 	<modules>
 		
 		<module name="ChatModule" url="http://HOST/client/ChatModule.swf?v=VERSION" 
