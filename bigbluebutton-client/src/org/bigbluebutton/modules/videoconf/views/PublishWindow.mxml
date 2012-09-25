@@ -120,7 +120,7 @@
 			private function loadPrefs():void{
 				var sharedObject:SharedObject = SharedObject.getLocal("bbbUserProperties", "/");
 				var webcam:String = sharedObject.data["webcam"] as String;
-				for (var i:Number = 0; i<Camera.names.length; i++){
+				for (var i:Number = 0; i < Camera.names.length; i++){
 					if (Camera.names[i] == webcam) cmbCameraSelector.selectedIndex = i;
 				}
 			}

@@ -12,8 +12,7 @@ package org.bigbluebutton.modules.videodock.maps
     public var dispatcher:IEventDispatcher;
     public var videoDock:VideoDock ;
     
-    public function moduleStart(event:ModuleEvent):void {
-      
+    public function moduleStart(event:ModuleEvent):void {      
       if (event.name != "VideodockModule") return;
       LogUtil.debug("VideoDockEventMapDelegate: Starting [" + event.name + "]");
       LogUtil.debug("Starting VideodockModule");

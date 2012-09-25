@@ -8,6 +8,7 @@ package org.bigbluebutton.main.api
   
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.main.events.BBBEvent;
+  import org.bigbluebutton.modules.videoconf.events.OpenPublishWindowEvent;
 
   public class Api
   {
@@ -22,7 +23,7 @@ package org.bigbluebutton.main.api
       ExternalInterface.addCallback("leaveVoice", placeHolder);
       ExternalInterface.addCallback("muteUser", placeHolder);
       ExternalInterface.addCallback("unmuteUser", placeHolder);
-      ExternalInterface.addCallback("shareVideo", placeHolder);
+      ExternalInterface.addCallback("shareVideo", onShareVideo);
       ExternalInterface.addCallback("unshareVideo", placeHolder);
     }
     
@@ -34,6 +35,12 @@ package org.bigbluebutton.main.api
       LogUtil.debug("Joining voice conference");
       var globalDispatcher:Dispatcher = new Dispatcher();
       globalDispatcher.dispatchEvent(new BBBEvent(BBBEvent.JOIN_VOICE_CONFERENCE));
+    }
+    
+    private function onShareVideo():void {
+      LogUtil.debug("Sharing video");
+      var globalDispatcher:Dispatcher = new Dispatcher();
+      globalDispatcher.dispatchEvent(new OpenPublishWindowEvent());
     }
   }
 }

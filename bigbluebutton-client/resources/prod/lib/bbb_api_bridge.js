@@ -16,3 +16,12 @@ function joinVoiceConference() {
 function userHasJoinedVoiceConference() {
   console.log("User has joined voice conference.");
 }
+
+function shareVideoCamera() {
+  console.log("Sharing Video Camera");
+  
+  var obj = swfobject.getObjectById("BigBlueButton");
+  if (obj) {
+    obj.shareVideo(); 
+  }
+}
