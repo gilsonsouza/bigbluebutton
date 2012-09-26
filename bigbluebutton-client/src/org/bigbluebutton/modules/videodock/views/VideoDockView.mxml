@@ -33,6 +33,7 @@ $Id: $
 	
 	<mx:Script>
 		<![CDATA[
+      import org.bigbluebutton.modules.videodock.models.VideoDockOptions;
 			import mx.events.ChildExistenceChangedEvent;			
 			import org.bigbluebutton.common.LogUtil;
 			import org.bigbluebutton.common.events.CloseWindowEvent;
@@ -56,13 +57,13 @@ $Id: $
 			// bigger the weight, bigger will be the window and less space the other windows will have
 			private var priorityWindowWeight:Number = 2/3;
 			
-			private var options:DockOptions = new DockOptions();
+			public var options:VideoDockOptions = new VideoDockOptions();
 			
 			private function init():void {				
 				this.showCloseButton = false;		
 				
-				this.minWidth = options.width;
-				this.minHeight = options.height;
+//				this.minWidth = options.width;
+//				this.minHeight = options.height;
 				this.maxWidth = this.parent.width;
 				this.maxHeight = this.parent.height;
 				
@@ -72,7 +73,7 @@ $Id: $
 				addEventListener(ChildExistenceChangedEvent.CHILD_ADD, onChildAdd);			
 				addEventListener(ChildExistenceChangedEvent.CHILD_REMOVE, onChildRemove);
 				
-				if (options.maximize) this.maximize();
+//				if (options.maximize) this.maximize();
 			}
 			
 			/**
@@ -118,7 +119,6 @@ $Id: $
 			}
 			
 			public function getPrefferedPosition():String {
-				//return MainCanvas.BOTTOM_RIGHT;
 				return options.position;
 			}
 			
@@ -250,7 +250,7 @@ $Id: $
 					// if the aspect ratio of the dock is smaller than the window (like 1:1 against 16:9)
 					// the window will be on top of the dock 
 					if (availableWidth / availableHeight < priorityWindow.width / priorityWindow.height
-							|| options.layout == DockOptions.LAYOUT_HANGOUT) {
+							|| options.layout == VideoDockOptions.LAYOUT_HANGOUT) {
 						priorityWindow.width = availableWidth;
 						priorityWindow.updateHeight();
 						if (priorityWindow.height > availableHeight * priorityWindowWeight) {
@@ -360,7 +360,7 @@ $Id: $
 			
 			private function prioritizeWindow(window:Object):void {
 				if (mutableChildrenArray.length <= 1
-						|| options.layout == DockOptions.LAYOUT_NONE)
+						|| options.layout == VideoDockOptions.LAYOUT_NONE)
 					return;
 				
 				if (window == priorityWindow && !options.oneAlwaysBigger) {

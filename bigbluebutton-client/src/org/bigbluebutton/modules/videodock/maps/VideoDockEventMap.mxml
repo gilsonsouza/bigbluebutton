@@ -26,8 +26,11 @@ $Id: $
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.common.events.CloseWindowEvent;
       import org.bigbluebutton.common.events.OpenWindowEvent;
+      import org.bigbluebutton.core.config.model.ConfigModel;
       import org.bigbluebutton.core.modules.events.ModuleEvent;
-      import org.bigbluebutton.modules.videodock.views.VideoDock;
+      import org.bigbluebutton.modules.videodock.models.VideoDockOptions;
+      import org.bigbluebutton.modules.videodock.views.VideoDockView;
+      import org.bigbluebutton.modules.videodock.views.VideoDockViewMediator;
 					
 		]]>
 	</mx:Script>
@@ -38,9 +41,18 @@ $Id: $
   </EventHandlers>	
   
   <Injectors target="{VideoDockEventMapDelegate}">
-    <PropertyInjector targetKey="dispatcher" source="{scope.dispatcher}"/>
-    <PropertyInjector targetKey="videoDock" source="{VideoDock}"/>    
+    
+    <PropertyInjector targetKey="videoDockViewMediator" source="{VideoDockViewMediator}"/>    
+  </Injectors>	
+
+  <Injectors target="{VideoDockOptions}">
+    <PropertyInjector targetKey="configModel" source="{ConfigModel}"/>    
   </Injectors>	
   
-
+  <Injectors target="{VideoDockViewMediator}">
+    <PropertyInjector targetKey="dispatcher" source="{scope.dispatcher}"/>
+    <PropertyInjector targetKey="videoDockView" source="{VideoDockView}"/>  
+    <PropertyInjector targetKey="configOptions" source="{VideoDockOptions}"/>
+  </Injectors>	
+  
 </EventMap>
