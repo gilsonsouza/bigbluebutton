@@ -64,12 +64,12 @@ $Id: $
 				
 //				this.minWidth = options.width;
 //				this.minHeight = options.height;
-				this.maxWidth = this.parent.width;
-				this.maxHeight = this.parent.height;
+//				this.maxWidth = this.parent.width;
+//				this.maxHeight = this.parent.height;
 				
-				this.width = this.minWidth;
-				this.height = this.minHeight;
-				
+//				this.width = this.minWidth;
+//				this.height = this.minHeight;
+//				
 				addEventListener(ChildExistenceChangedEvent.CHILD_ADD, onChildAdd);			
 				addEventListener(ChildExistenceChangedEvent.CHILD_REMOVE, onChildRemove);
 				
